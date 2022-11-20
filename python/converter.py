@@ -43,7 +43,7 @@ class Image(MarkdownNode):
         self.url = url
     
     def __str__(self):
-        return f"<img src=\"{self.url}\" alt=\"{self.text}\" \>\n"
+        return f"<img src=\"{self.url}\" alt=\"{self.text}\" />\n"
 
 class Text(MarkdownNode):
     def __init__(self, text:str):
@@ -101,7 +101,6 @@ class Parser:
         self.index += 1
         return self.tokens[self.index - 1]
         
-    
     def accept(self, token:str)->str|None:
         if self.tokens[self.index] == token:
             return self.pop()
@@ -212,7 +211,7 @@ def scanner(line:str)->list[str]:
     for c in line[1:]:
         if c == '\n':
             break
-        elif ((token[-1] in specialChars) != (c in specialChars)) or (c == '#' or c == '(' or c == '['):
+        elif ((token[-1] in specialChars) != (c in specialChars)) or c == '#' or c == '(' or c == '[':
             retval.append(token)
             token = c
         else:
@@ -238,6 +237,7 @@ def main():
 if __name__ == '__main__':
     main()
 
+# To run: python converter.py ../input.md
 # Pros:
 #   - Can run/test program with one command
 #   - Really good file IO and string support

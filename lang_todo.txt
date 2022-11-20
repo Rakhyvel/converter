@@ -1,5 +1,5 @@
 Write a ~200 line markdown converter in each of these languages:
-- Python                
+x Python                
 - Go                    
 - C++                   
 - Rust                  
@@ -39,19 +39,3 @@ Write a ~200 line markdown converter in each of these languages:
 - SML               
 - D                     
 - Scheme                
-
-1. Open the input markdown file as the first command line arg
-2. Turn it into an array of lines
-3. Convert each line into a makrdown node
-4. Generate out the HTMl for each markdown node
-
-Document    -> {Node}
-Node        -> Header | FormattedText | CodeBlock
-Header      -> "#"{"#"} FormattedText 
-FormattedText        -> Regular | Bold | Italic | Code | Image | Link
-Bold        -> "__" FormattedText "__" | "**" FormattedText "**" 
-Italic      -> "_" FormattedText "_" | "*" FormattedText "*"
-Code        -> "`" Verbatim "`"
-Link       -> "[" Text "]" "(" Text ")"
-Image       -> "!" Link
-CodeBlock   -> "```" Text "```"
