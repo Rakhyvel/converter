@@ -1,6 +1,6 @@
 Write a ~200 line markdown converter in each of these languages:
 x Python                
-- Go                    
+x Go                    
 - C++                   
 - Rust                  
 - Java                  
