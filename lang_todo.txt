@@ -1,13 +1,14 @@
-Write a ~200 line markdown converter in each of these languages:
+Write a markdown converter in each of these languages:
 x Python                
 x Go                    
-- C++                   
+x C++              
 - Rust                  
 - Java                  
 - C#                    
 - Kotlin                
 - C                     
-- PHP                   
+- PHP                       
+- NodeJS       
 - Swift                 
 - Zig                   
 - Julia                 
@@ -38,4 +39,4 @@ x Go
 - Erlang                
 - SML               
 - D                     
-- Scheme                
+- Scheme          

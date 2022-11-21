@@ -120,7 +120,7 @@ func (parser *Parser) parseHeader() *Header {
 	for parser.accept("#") != nil {
 		size += 1
 	}
-	return &Header{1, parser.parseFormattedText([]string{"\n"})}
+	return &Header{size, parser.parseFormattedText([]string{"\n"})}
 }
 
 func (parser *Parser) parseCodeBlock() *CodeBlock {
@@ -153,9 +153,9 @@ func (parser *Parser) parseFormattedText(bounds []string) []Node {
 		} else if parser.accept("__") != nil || parser.accept("**") != nil {
 			children = append(children, parser.parseBold(bounds))
 		} else if parser.accept("`") != nil {
-			children = append(children, parser.parseCode(bounds))
+			children = append(children, parser.parseCode())
 		} else if parser.accept("[") != nil {
-			children = append(children, parser.parseLink(bounds))
+			children = append(children, parser.parseLink())
 		} else {
 			children = append(children, &Text{parser.pop().data})
 		}
@@ -185,7 +185,7 @@ func (parser *Parser) parseBold(bounds []string) *Bold {
 	return &Bold{children}
 }
 
-func (parser *Parser) parseCode(bounds []string) *Code {
+func (parser *Parser) parseCode() *Code {
 	text := ""
 	for parser.accept("`") == nil {
 		text += parser.pop().data
@@ -193,7 +193,7 @@ func (parser *Parser) parseCode(bounds []string) *Code {
 	return &Code{text}
 }
 
-func (parser *Parser) parseLink(bounds []string) *Link {
+func (parser *Parser) parseLink() *Link {
 	text := parser.pop().data
 	parser.expect("]")
 	parser.expect("(")

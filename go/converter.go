@@ -32,6 +32,7 @@ package main
 //	- Nil values rather than optionals
 //	- HORRIBLE C pointer type syntax
 //	- Slices don't have a length field like they should
+//	- Strange memory model. Have to worry about UAF and other issues that come with pointers, but there's a garbage collector too? Weird. IDK where structs or variables are stored.
 //
 //
 // Not a language thing but the VS lang server for Go is too eager with marking things as errors as I'm typing, and the formatting is annoying

@@ -1,3 +1,21 @@
+# To run: python converter.py ../input.md
+# Pros:
+#   - Can run/test program with one command
+#   - Really good file IO and string support
+#   - Modular indexing is helpful for getting the last element, no bounds checks required, may be confusing if unintentional though
+#   - Being able to say 'elem in set' as a boolean is useful
+#   - Sets in general have really good support, very easy, no cognition required
+#   - Formatted strings!
+# Cons:
+#   - No implicit main function, have to do that stupid 'if __name__ == __main__' thing
+#   - Can't leave a function body/if body/for body blank when filling out a function, which is sorta annoying
+#   - Command line arguments are weird, because there's no implicit main function
+#   - Inheritance is a little confusing, I prefer interfaces instead
+#   - Dynamically typed
+#   - Still have to order type definitions (may be a lang server thing)
+#   - Indentation makes it hard to read sometimes, hard to hold onto "landmarks"
+
+
 import sys
 
 
@@ -211,7 +229,7 @@ def scanner(line:str)->list[str]:
     for c in line[1:]:
         if c == '\n':
             break
-        elif ((token[-1] in specialChars) != (c in specialChars)) or c == '#' or c == '(' or c == '[':
+        elif ((token[-1] in specialChars) != (c in specialChars)) or (c == '#' or c == '(' or c == '['):
             retval.append(token)
             token = c
         else:
@@ -236,20 +254,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# To run: python converter.py ../input.md
-# Pros:
-#   - Can run/test program with one command
-#   - Really good file IO and string support
-#   - Modular indexing is helpful for getting the last element, no bounds checks required, may be confusing if unintentional though
-#   - Being able to say 'elem in set' as a boolean is useful
-#   - Sets in general have really good support, very easy, no cognition required
-#   - Formatted strings!
-# Cons:
-#   - No implicit main function, have to do that stupid 'if __name__ == __main__' thing
-#   - Can't leave a function body/if body/for body blank, which is sorta annoying
-#   - Command line arguments are weird, because there's no implicit main function
-#   - Inheritance is a little confusing, I prefer composable interfaces instead
-#   - Dynamically typed
-#   - Have to order type definitions
-#   - Indentation makes it hard to read sometimes, hard to hold onto "landmarks"
