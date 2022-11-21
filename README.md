@@ -2,9 +2,9 @@
 The goal of this project is to explore and compare/constrast general purpose languages. The same Markdown to HTML converter is implemented in each language. Each language has a comment with the command line input to run the program, as well as my opinions about the language as I was implementing the converter.
 
 # Language TODO list
-[-] Python                
-[-] Go                    
-[-] C++              
+[x] Python                
+[x] Go                    
+[x] C++              
 [ ] Rust                  
 [ ] Java                  
 [ ] C#                    
