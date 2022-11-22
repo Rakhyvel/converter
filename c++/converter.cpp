@@ -21,6 +21,7 @@
 //  - Iterator model works well for iterating, BUT it feels like a bit of a leap to use iterators to check if a container contains something
 //  - Runtime errors don't have source code position info (probably for security, or size. should be a debug option at least)
 //  - Exceptions can return from any function, no warning, no expectation to handle them, program doesn't crash, just silently exits. Awful!
+//  - Have to order declarations
 
 #include <iostream>
 #include <fstream>
