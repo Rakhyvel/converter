@@ -6,7 +6,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] Go                    
 - [x] C++              
 - [x] Rust                  
-- [ ] Java                  
+- [x] Java                  
 - [ ] C#                    
 - [ ] Kotlin                
 - [ ] C                     
