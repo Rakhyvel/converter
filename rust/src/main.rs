@@ -1,4 +1,4 @@
-// To run: cargo run
+// To run: cargo run ../input.md
 // Pros:
 //  - AMAZING documentation and tutorial and lang server
 //  - Optional data types
@@ -22,6 +22,7 @@
 //  - Good string formatting
 // Cons:
 //  - Cargo is a bit bulky and sensitive. Not suitable for prototyping
+//      (Just for this project the rust directory is 11 MEGABYTES. 20 times larger than others)
 //  - File hierarchy and modules are non-intuitive
 //  - Lifetimes are complicated (very clever but still too complicated)
 //      (lifetime poisoning)

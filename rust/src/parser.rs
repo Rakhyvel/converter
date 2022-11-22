@@ -23,7 +23,7 @@ pub fn create_parser(contents: String)->Parser {
     let mut col = 1;
     let mut old_col = 1;
     let mut old_c:char = contents.chars().next().unwrap();
-    for c in contents.chars() {
+    for c in contents.chars().next() {
         if old_c == '\n' || old_c == '\r' || (is_special_char(old_c) != is_special_char(c)) || c == '#' || c == '[' || c == '(' || c == '!' || c == '\n' || c == '\r' {
             if !data.contains("\r") {
                 parser.tokens.push(Token{data:data, line:line, col:old_col});
@@ -107,7 +107,7 @@ impl Parser {
     }
 
     fn parse_header(&mut self)->Header {
-        let mut size = 0;
+        let mut size = 1;
         while self.accept(&String::from("#")).is_some() {
             size += 1;
         }
