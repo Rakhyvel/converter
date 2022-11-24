@@ -19,6 +19,7 @@ package main
 // 	- Good string concat syntax
 //	- Interfaces are good!
 //	- Package manager is actually pretty sick when you can just say `import "url.com"` and it'll import it into your project no fiddling required
+//	- Don't need semicolons
 // Cons:
 //	- Build system is a little clunky, don't like that I NEED to have a package setup
 //  - Seems really slow to compile

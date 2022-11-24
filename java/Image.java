@@ -9,6 +9,6 @@ public class Image implements Node {
 
     @Override
     public String getString() {
-        return "<img src=\"" + this.url + "\" alt=\"" + this.text + "\" />\n";
+        return "<img src=\"" + url + "\" alt=\"" + text + "\" />\n\n";
     }
 }

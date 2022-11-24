@@ -23,7 +23,7 @@ pub fn create_parser(contents: String)->Parser {
     let mut col = 1;
     let mut old_col = 1;
     let mut old_c:char = contents.chars().next().unwrap();
-    for c in contents.chars().next() {
+    for c in contents.chars().skip(1) {
         if old_c == '\n' || old_c == '\r' || (is_special_char(old_c) != is_special_char(c)) || c == '#' || c == '[' || c == '(' || c == '!' || c == '\n' || c == '\r' {
             if !data.contains("\r") {
                 parser.tokens.push(Token{data:data, line:line, col:old_col});

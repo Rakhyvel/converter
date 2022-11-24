@@ -9,6 +9,6 @@ public class Link implements Node {
 
     @Override
     public String getString() {
-        return "<a href=\"" + this.url + "\">" + this.text + "</a>";
+        return "<a href=\"" + url + "\">" + text + "</a>";
     }
 }

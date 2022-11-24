@@ -63,19 +63,19 @@ impl Node for Paragraph {
         for child in self.children.iter() {
             text += &child.get_string();
         }
-        text + "</p>\n"
+        text + "</p>\n\n"
     }
 }
 
 impl Node for CodeBlock {
     fn get_string(&self)->String {
-        format!("<pre><code>{}</code></pre>\n", self.text)
+        format!("<pre><code>{}</code></pre>\n\n", self.text)
     }
 }
 
 impl Node for Image {
     fn get_string(&self)->String {
-        format!("<img src=\"{}\" alt=\"{}\" />\n", self.url, self.text)
+        format!("<img src=\"{}\" alt=\"{}\" />\n\n", self.url, self.text)
     }
 }
 

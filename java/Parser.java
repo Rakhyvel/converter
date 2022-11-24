@@ -26,9 +26,9 @@ public class Parser {
         int oldCol = 1;
         char oldC = contents.charAt(0);
         for (char c : contents.substring(1).toCharArray()) {
-            if (oldC == '\n' || oldC == '\r' || (this.isSpecialChar(oldC) != this.isSpecialChar(c)) || c == '#' || c == '[' || c == '(' || c == '!' || c == '\n' || c == '\r' ) {
+            if (oldC == '\n' || oldC == '\r' || (isSpecialChar(oldC) != isSpecialChar(c)) || c == '#' || c == '[' || c == '(' || c == '!' || c == '\n' || c == '\r' ) {
                 if (!data.contains("\r")) {
-                    this.tokens.add(new Token(data, line, col));
+                    tokens.add(new Token(data, line, oldCol));
                 }
                 oldCol = col + 1;
                 if (c == '\n') {
@@ -43,8 +43,8 @@ public class Parser {
             col++;
             oldC = c;
         }
-        this.tokens.add(new Token(data, line, col));
-        this.tokens.add(new Token("\n", line, col));
+        tokens.add(new Token(data, line, col));
+        tokens.add(new Token("\n", line, col));
     }
 
     private boolean isSpecialChar(char c) {
@@ -60,26 +60,25 @@ public class Parser {
     }
 
     private Token pop() {
-        this.index++;
-        return this.tokens.get(this.index - 1);
+        index++;
+        return tokens.get(index - 1);
     }
 
     private Token peek() {
-        return this.tokens.get(this.index);
+        return tokens.get(index);
     }
 
     private Optional<Token> accept(String data) {
-        if (this.tokens.get(this.index).data.equals(data)) {
-            return Optional.of(this.pop());
+        if (peek().data.equals(data)) {
+            return Optional.of(pop());
         } else {
             return Optional.empty();
         }
     }
 
     private void expect(String data) {
-        Optional<Token> res = this.accept(data);
-        if (!res.isPresent()) {
-            Token top = this.peek();
+        if (!accept(data).isPresent()) {
+            Token top = peek();
             if (isSpecialChar(top.data.charAt(0))) {
                 System.err.printf("error: %d:%d expected `%s` got `%s`\n", top.line, top.col, data, top.data);
             } else {
@@ -91,8 +90,8 @@ public class Parser {
 
     public ArrayList<Node> parseDocument() {
         ArrayList<Node> retval = new ArrayList<>();
-        while (this.index < this.tokens.size() - 1) {
-            Optional<Node> node = this.parseNode();
+        while (index < tokens.size() - 1) {
+            Optional<Node> node = parseNode();
             if (node.isPresent()) {
                 retval.add(node.get());
             }
@@ -101,66 +100,66 @@ public class Parser {
     }
 
     private Optional<Node> parseNode() {
-        if (this.accept("#").isPresent()) {
-            return Optional.of(this.parseHeader());
-        } else if (this.accept("```").isPresent()) {
-            return Optional.of(this.parseCodeBlock());
-        } else if (this.accept("!").isPresent()) {
-            return Optional.of(this.parseImage());
-        } else if (this.accept("\n").isPresent()) {
+        if (accept("#").isPresent()) {
+            return Optional.of(parseHeader());
+        } else if (accept("```").isPresent()) {
+            return Optional.of(parseCodeBlock());
+        } else if (accept("!").isPresent()) {
+            return Optional.of(parseImage());
+        } else if (accept("\n").isPresent()) {
             return Optional.empty();
         } else {
-            return Optional.of(this.parseParagraph());
+            return Optional.of(parseParagraph());
         }
     }
 
     private Header parseHeader() {
         int size = 1;
-        while (this.accept("#").isPresent()) {
+        while (accept("#").isPresent()) {
             size++;
         }
         HashSet<String> bounds = new HashSet<String>();
         bounds.add("\n");
-        return new Header(size, this.parseFormattedText(bounds));
+        return new Header(size, parseFormattedText(bounds));
     }
 
     private Paragraph parseParagraph() {
         HashSet<String> bounds = new HashSet<String>();
         bounds.add("\n");
-        return new Paragraph(this.parseFormattedText(bounds));
+        return new Paragraph(parseFormattedText(bounds));
     }
 
     private CodeBlock parseCodeBlock() {
         String text = "";
-        while (this.accept("```").isEmpty()) {
-            text += this.pop().data;
+        while (accept("```").isEmpty()) {
+            text += pop().data;
         }
         return new CodeBlock(text);
     }
 
     private Image parseImage() {
-        this.expect("[");
-        String text = this.pop().data;
-        this.expect("]");
-        this.expect("(");
-        String url = this.pop().data;
-        this.expect(")");
+        expect("[");
+        String text = pop().data;
+        expect("]");
+        expect("(");
+        String url = pop().data;
+        expect(")");
         return new Image(text, url);
     }
 
     private ArrayList<Node> parseFormattedText(HashSet<String> bounds) {
         ArrayList<Node> retval = new ArrayList<>();
-        while (!bounds.contains(this.peek().data)) {
-            if (this.accept("_").isPresent() || this.accept("*").isPresent()) {
-                retval.add(this.parseItalic(bounds));
-            } else if (this.accept("__").isPresent() || this.accept("**").isPresent()) {
-                retval.add(this.parseBold(bounds));
-            } else if (this.accept("`").isPresent()) {
-                retval.add(this.parseCode());
-            } else if (this.accept("[").isPresent()) {
-                retval.add(this.parseLink());
+        while (!bounds.contains(peek().data)) {
+            if (accept("_").isPresent() || accept("*").isPresent()) {
+                retval.add(parseItalic(bounds));
+            } else if (accept("__").isPresent() || accept("**").isPresent()) {
+                retval.add(parseBold(bounds));
+            } else if (accept("`").isPresent()) {
+                retval.add(parseCode());
+            } else if (accept("[").isPresent()) {
+                retval.add(parseLink());
             } else {
-                retval.add(new Text(this.pop().data));
+                retval.add(new Text(pop().data));
             }
         }
         return retval;
@@ -170,9 +169,9 @@ public class Parser {
         HashSet<String> newBounds = (HashSet<String>)bounds.clone();
         newBounds.add("*");
         newBounds.add("_");
-        ArrayList<Node> children = this.parseFormattedText(newBounds);
-        if (this.accept("*").isEmpty()) {
-            this.expect("_");
+        ArrayList<Node> children = parseFormattedText(newBounds);
+        if (accept("*").isEmpty()) {
+            expect("_");
         }
         return new Italic(children);
     }
@@ -181,27 +180,27 @@ public class Parser {
         HashSet<String> newBounds = (HashSet<String>)bounds.clone();
         newBounds.add("**");
         newBounds.add("__");
-        ArrayList<Node> children = this.parseFormattedText(newBounds);
-        if (this.accept("**").isEmpty()) {
-            this.expect("__");
+        ArrayList<Node> children = parseFormattedText(newBounds);
+        if (accept("**").isEmpty()) {
+            expect("__");
         }
         return new Bold(children);
     }
 
     private Code parseCode() {
         String text = "";
-        while (this.accept("`").isEmpty()) {
-            text += this.pop().data;
+        while (accept("`").isEmpty()) {
+            text += pop().data;
         }
         return new Code(text);
     }
 
     private Link parseLink() {
-        String text = this.pop().data;
-        this.expect("]");
-        this.expect("(");
-        String url = this.pop().data;
-        this.expect(")");
+        String text = pop().data;
+        expect("]");
+        expect("(");
+        String url = pop().data;
+        expect(")");
         return new Link(text, url);
     }
 }

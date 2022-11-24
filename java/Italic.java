@@ -10,7 +10,7 @@ public class Italic implements Node {
     @Override
     public String getString() {
         String text = "<em>";
-        for (Node child : this.children) {
+        for (Node child : children) {
             text += child.getString();
         }
         return text + "</em>";

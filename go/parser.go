@@ -28,10 +28,12 @@ func createParser(content []byte) *Parser {
 	oldCol := 1
 	for i := 1; i < len(content); i += 1 {
 		c := content[i]
-		if data[len(data)-1] == '\n' || (isSpecialChar(data[len(data)-1]) != isSpecialChar(c)) || c == '#' || c == '[' || c == '(' || c == '\n' {
-			parser.tokens = append(parser.tokens, Token{data, line, oldCol})
+		if data[len(data)-1] == '\n' || data[len(data)-1] == '\r' || (isSpecialChar(data[len(data)-1]) != isSpecialChar(c)) || c == '#' || c == '[' || c == '(' || c == '\n' || c == '\r' {
+			if !strings.Contains(data, "\r") {
+				parser.tokens = append(parser.tokens, Token{data, line, oldCol})
+				parser.numTokens += 1
+			}
 			oldCol = col + 1
-			parser.numTokens += 1
 			if strings.Contains(data, "\n") {
 				line += 1
 				col = 0
@@ -68,7 +70,7 @@ func (parser *Parser) peek() Token {
 }
 
 func (parser *Parser) accept(token string) *Token {
-	if parser.tokens[parser.index].data == token {
+	if parser.peek().data == token {
 		parser.index += 1
 		return &parser.tokens[parser.index-1]
 	} else {
@@ -76,8 +78,8 @@ func (parser *Parser) accept(token string) *Token {
 	}
 }
 
-func (parser *Parser) expect(token string) *Token {
-	if res := parser.accept(token); res == nil {
+func (parser *Parser) expect(token string) {
+	if parser.accept(token) == nil {
 		top := parser.peek()
 		if isSpecialChar(top.data[0]) {
 			fmt.Printf("error: %s:%d:%d expected `%s`, got `%s`\n", os.Args[1], top.line, top.col, token, top.data)
@@ -85,9 +87,6 @@ func (parser *Parser) expect(token string) *Token {
 			fmt.Printf("error: %s:%d:%d expected `%s`, got text\n", os.Args[1], top.line, top.col, token)
 		}
 		os.Exit(1)
-		return nil
-	} else {
-		return res
 	}
 }
 

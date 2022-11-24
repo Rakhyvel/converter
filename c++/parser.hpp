@@ -16,8 +16,8 @@ struct Token {
 class Parser {
 public:
     Parser(std::string content) {
-        this->index = 0;
-        this->tokens = std::vector<Token*>();
+        index = 0;
+        tokens = std::vector<Token*>();
 
         std::string data = "";
         data += content[0];
@@ -28,7 +28,7 @@ public:
         for (int i = 1; i < content.length(); i ++) {
             char c = content.at(i);
             if (data[data.length() - 1] == '\n' || (isSpecialChar(data[data.length() - 1]) != isSpecialChar(c)) || c == '#' || c == '[' || c == '(' || c == '!' || c == '\n') {
-                this->tokens.push_back(new Token{data, line, oldCol});
+                tokens.push_back(new Token{data, line, oldCol});
                 oldCol = col + 1;
                 if (data.find("\n") != std::string::npos) {
                     line += 1;
@@ -44,8 +44,8 @@ public:
             }
             col += 1;
         }
-        this->tokens.push_back(new Token{data, line, oldCol});
-        this->tokens.push_back(new Token{"\n", line, oldCol});
+        tokens.push_back(new Token{data, line, oldCol});
+        tokens.push_back(new Token{"\n", line, oldCol});
     }
 
     std::vector<Node*> parseDocument();
@@ -64,7 +64,7 @@ private:
     Token* pop();
     Token* peek();
     Token* accept(std::string data);
-    Token* expect(std::string data);
+    void expect(std::string data);
 
     std::vector<Token*> tokens;
     int index;

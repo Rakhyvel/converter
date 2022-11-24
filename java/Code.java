@@ -7,6 +7,6 @@ public class Code implements Node {
 
     @Override
     public String getString() {
-        return "<code>" + this.text + "</code>";
+        return "<code>" + text + "</code>";
     }
 }

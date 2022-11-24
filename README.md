@@ -3,11 +3,12 @@ The goal of this project is to explore and compare/constrast general purpose lan
 
 # Language TODO list
 - [x] Python                
+- [ ] TypeScript
 - [x] Go                    
 - [x] C++              
 - [x] Rust                  
 - [x] Java                  
-- [ ] C#                    
+- [x] C#                    
 - [ ] Kotlin                
 - [ ] C                     
 - [ ] PHP                       
@@ -18,6 +19,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [ ] Scala                 
 - [ ] Elixir                
 - [ ] Ruby
+- [ ] Lua
 - [ ] Blade                 
 - [ ] Pascal/Delphi         
 - [ ] Prolog
@@ -36,6 +38,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [ ] Smalltalk
 - [ ] Common Lisp           
 - [ ] Objective-C           
+- [ ] Mathematica
 - [ ] Ada                   
 - [ ] Haxe                  
 - [ ] Racket                
@@ -43,3 +46,16 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [ ] SML               
 - [ ] D                     
 - [ ] Scheme          
+- [ ] Forth
+- [ ] Mercury
+- [ ] Eiffel
+- [ ] REXX
+- [ ] Rebol
+- [ ] Dylan
+- [ ] Io
+- [ ] E
+- [ ] Pike
+- [ ] Icon
+- [ ] Maple
+- [ ] merd
+- [ ] Orng

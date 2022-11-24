@@ -7,6 +7,6 @@ public class Text implements Node {
 
     @Override
     public String getString() {
-        return this.text;
+        return text;
     }
 }

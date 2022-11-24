@@ -7,6 +7,6 @@ public class CodeBlock implements Node {
 
     @Override
     public String getString() {
-        return "<pre><code>" + this.text + "</code></pre>\n";
+        return "<pre><code>" + text + "</code></pre>\n\n";
     }
 }

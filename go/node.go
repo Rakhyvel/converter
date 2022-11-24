@@ -76,15 +76,15 @@ func (paragraph *Paragraph) str() string {
 			text += child
 		}
 	}
-	return text + "</p>\n"
+	return text + "</p>\n\n"
 }
 
 func (codeBlock *CodeBlock) str() string {
-	return "<pre><code>" + codeBlock.text + "</code></pre>\n"
+	return "<pre><code>" + codeBlock.text + "</code></pre>\n\n"
 }
 
 func (image *Image) str() string {
-	return "<img src=\"" + image.url + "\" alt=\"" + image.text + "\" />\n"
+	return "<img src=\"" + image.url + "\" alt=\"" + image.text + "\" />\n\n"
 }
 
 func (text *Text) str() string {

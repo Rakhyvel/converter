@@ -4,44 +4,44 @@
 
 std::string Header::getString() {
     std::ostringstream ss;
-    ss << "<h" << this->size << ">";
-    for (Node* node : this->children) {
+    ss << "<h" << size << ">";
+    for (Node* node : children) {
         ss << node->getString();
     }
-    ss << "</h" << this->size << ">";
+    ss << "</h" << size << ">";
     return ss.str();
 }
 
 std::string Paragraph::getString() {
     std::ostringstream ss;
     ss << "<p>";
-    for (Node* node : this->children) {
+    for (Node* node : children) {
         ss << node->getString();
     }
-    ss << "</p>";
+    ss << "</p>\n";
     return ss.str();
 }
 
 std::string CodeBlock::getString() {
     std::ostringstream ss;
-    ss << "<pre><code>" << this->text << "</pre></code>";
+    ss << "<pre><code>" << text << "</pre></code>\n";
     return ss.str();
 }
 
 std::string Image::getString() {
     std::ostringstream ss;
-    ss << "<img src=\"" << this->url << "\" alt=\"" << this->text << "\" />";
+    ss << "<img src=\"" << url << "\" alt=\"" << text << "\" />\n";
     return ss.str();
 }
 
 std::string Text::getString() {
-    return this->text;
+    return text;
 }
 
 std::string Italic::getString() {
     std::ostringstream ss;
     ss << "<em>";
-    for (Node* node : this->children) {
+    for (Node* node : children) {
         ss << node->getString();
     }
     ss << "</em>";
@@ -51,7 +51,7 @@ std::string Italic::getString() {
 std::string Bold::getString() {
     std::ostringstream ss;
     ss << "<strong>";
-    for (Node* node : this->children) {
+    for (Node* node : children) {
         ss << node->getString();
     }
     ss << "</strong>";
@@ -60,12 +60,12 @@ std::string Bold::getString() {
 
 std::string Code::getString() {
     std::ostringstream ss;
-    ss << "<code>" << this->text << "</code>";
+    ss << "<code>" << text << "</code>";
     return ss.str();
 }
 
 std::string Link::getString() {
     std::ostringstream ss;
-    ss << "<a href=\"" << this->url << "\">" << this->text << "</a>";
+    ss << "<a href=\"" << url << "\">" << text << "</a>";
     return ss.str();
 }

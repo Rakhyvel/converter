@@ -11,9 +11,9 @@ public class Header implements Node {
 
     @Override
     public String getString() {
-        String text = "<h" + this.size + ">";
+        String text = "<h" + size + ">";
         int i = 0;
-        for (Node child : this.children) {
+        for (Node child : children) {
             if (i == 0) {
                 text += child.getString().strip();
             } else {
@@ -21,6 +21,6 @@ public class Header implements Node {
             }
             i++;
         }
-        return text + "</h" + this.size + ">\n";
+        return text + "</h" + size + ">\n";
     }
 }
