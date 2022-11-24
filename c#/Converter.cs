@@ -29,11 +29,11 @@ class Converter {
             // Open input file, read contents
             string contents = File.ReadAllText(args[0]);
 
-            // Create parser, parse Markdown
+            // Create parser, parse Markdown document
             Parser parser = new Parser(contents);
             List<INode> html = parser.ParseDocument();
 
-            // Open output file, write out HTML
+            // Open output file, write HTML document
             using StreamWriter file = new("output.html");
             foreach (INode node in html) {
                 await file.WriteLineAsync(node.GetString());

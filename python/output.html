@@ -1,5 +1,6 @@
 <h1>This right here is a header</h1>
 <p>This is a paragraph. It can contain <em>italic</em> text, <strong>bold</strong> text, and <code>inline code</code>.</p>
+
 <pre><code>
 This is a code-block
     Text in here SHOULD 
@@ -7,11 +8,12 @@ This is a code-block
         formatted
     correctly
 
-
 const sys = import "<std/sys.orng>"
-const main:(args:[]String)->!() = {
+const main:(args:[]String)->!() = 
     sys.println("Hello, world!")
-}
 </code></pre>
-<p><a href="https://www.google.com">A link to somewhere</a></p>
-<img src="https://www.google.com" alt="An image of something" \>
+
+<p><a href='https://www.google.com'>A link to somewhere</a></p>
+
+<img src='https://www.google.com' alt='An image of something' />
+
