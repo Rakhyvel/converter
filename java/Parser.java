@@ -27,9 +27,7 @@ public class Parser {
         char oldC = contents.charAt(0);
         for (char c : contents.substring(1).toCharArray()) {
             if (oldC == '\n' || oldC == '\r' || (isSpecialChar(oldC) != isSpecialChar(c)) || c == '#' || c == '[' || c == '(' || c == '!' || c == '\n' || c == '\r' ) {
-                if (!data.contains("\r")) {
-                    tokens.add(new Token(data, line, oldCol));
-                }
+                tokens.add(new Token(data, line, oldCol));
                 oldCol = col + 1;
                 if (c == '\n') {
                     line++;

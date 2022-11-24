@@ -75,9 +75,9 @@ class Parser {
         if (Accept(data) == null) {
             Token top = Peek();
             if (IsSpecialChar(top.Data[0])) {
-                Console.Error.WriteLine("error: %d:%d expected `%s` got `%s", top.Line, top.Col, data, top.Data);
+                Console.WriteLine("error: {0}:{1} expected `{2}` got `{3}`\n", top.Line, top.Col, data, top.Data);
             } else {
-                Console.Error.WriteLine("error: %d:%d expected `%s` got text", top.Line, top.Col, data);
+                Console.WriteLine("error: {0}:{1} expected `{2}` got text\n", top.Line, top.Col, data);
             }
             System.Environment.Exit(1);
         }

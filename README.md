@@ -3,7 +3,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 
 # Language TODO list
 - [x] Python                
-- [ ] TypeScript
+- [x] JavaScript
 - [x] Go                    
 - [x] C++              
 - [x] Rust                  
@@ -11,8 +11,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] C#                    
 - [ ] Kotlin                
 - [ ] C                     
-- [ ] PHP                       
-- [ ] TypeScript       
+- [ ] PHP              
 - [ ] Swift                 
 - [ ] Zig                   
 - [ ] Julia                 

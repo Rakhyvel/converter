@@ -1,4 +1,4 @@
-﻿// To run: dotnet run ../input.md
+﻿// To run: dotnet run converter.cs ../input.md
 // Pros:
 //  - Very easy to setup a new project with command line, small project files
 //  - Can have functions outside of classes, unlike Java (sorta)
@@ -21,23 +21,19 @@
 //  - .csproj file is in XML
 //  - Structures have too much boilerplate, same with classes. No logical implicit constructor for structs
 
-class Converter {
-    public static async Task Main(string[] args) {
-        if (args.Length != 1) {
-            Console.WriteLine("usage: dotnet run <filename>");
-        } else {
-            // Open input file, read contents
-            string contents = File.ReadAllText(args[0]);
+if (args.Length != 2) {
+    Console.WriteLine("usage: dotnet run <filename>");
+} else {
+    // Open input file, read contents
+    string contents = File.ReadAllText(args[1]);
 
-            // Create parser, parse Markdown document
-            Parser parser = new Parser(contents);
-            List<INode> html = parser.ParseDocument();
+    // Create parser, parse Markdown document
+    Parser parser = new Parser(contents);
+    List<INode> html = parser.ParseDocument();
 
-            // Open output file, write HTML document
-            using StreamWriter file = new("output.html");
-            foreach (INode node in html) {
-                await file.WriteLineAsync(node.GetString());
-            }
-        }
+    // Open output file, write HTML document
+    using StreamWriter file = new("output.html");
+    foreach (INode node in html) {
+        await file.WriteLineAsync(node.GetString());
     }
 }
