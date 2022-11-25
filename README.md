@@ -3,41 +3,43 @@ The goal of this project is to explore and compare/constrast general purpose lan
 
 # Language TODO list
 - [x] Python                
-- [x] JavaScript
+- [x] JavaScript            
 - [x] Go                    
-- [x] C++              
+- [x] C++                   
 - [x] Rust                  
 - [x] Java                  
 - [x] C#                    
 - [x] Kotlin                
 - [x] C                     
-- [ ] PHP              
+- [ ] PHP                   
 - [ ] Swift                 
 - [ ] Zig                   
 - [ ] Julia                 
 - [ ] Scala                 
 - [ ] Elixir                
-- [ ] Ruby
-- [ ] Lua
+- [ ] Ruby                  
+- [ ] Lua                   
 - [ ] Blade                 
 - [ ] Pascal/Delphi         
-- [ ] Prolog
+- [ ] Prolog                
 - [ ] Nim                   
 - [ ] Groovy                
 - [ ] Visual Basic .NET     
 - [ ] OCaml                 
 - [ ] Haskell               
 - [ ] Fortran               
+- [ ] Assembly
 - [ ] F#                    
 - [ ] Clojure               
 - [ ] Perl                  
 - [ ] Odin                  
+- [ ] Astro
 - [ ] Crystal               
 - [ ] Tcl                   
-- [ ] Smalltalk
+- [ ] Smalltalk             
 - [ ] Common Lisp           
 - [ ] Objective-C           
-- [ ] Mathematica
+- [ ] Mathematica           
 - [ ] Ada                   
 - [ ] Haxe                  
 - [ ] Racket                

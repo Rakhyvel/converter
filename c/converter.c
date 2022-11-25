@@ -21,6 +21,7 @@
 //  - No error if you forget to give a parameter to a function
 //  - No namespacing
 //  - Impossible to debug
+//  - Weakly typed
 
 #include "node.h"
 #include "parser.h"
