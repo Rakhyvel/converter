@@ -9,7 +9,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] Rust                  
 - [x] Java                  
 - [x] C#                    
-- [ ] Kotlin                
+- [x] Kotlin                
 - [ ] C                     
 - [ ] PHP              
 - [ ] Swift                 

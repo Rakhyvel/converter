@@ -200,7 +200,7 @@ class Parser {
     expect(data) {
         if (!this.accept(data)) {
             let top = this.peek()
-            if (isSpecialChar(top[0])) {
+            if (isSpecialChar(top.data[0])) {
                 console.log("error: %d:%d expected `%s`, got `%s`\n", top.line, top.col, token, top.data)
             } else {
                 console.log("error: %d:%d expected `%s`, got text\n", top.line, top.col, token)
