@@ -12,7 +12,7 @@ import java.io.File
 //  - HAVE TO HAVE INTELLIJ, WTF! LAME!
 //  - Parens around if and while and for loop headers
 //  - : function type declaration
-//  - 'boolean' operator
+//  - 'boolean' type name rather than `bool`
 //  - Slow as hell to compile and run
 
 fun main(args: Array<String>) {
