@@ -46,22 +46,18 @@ class Parser {
                 c == '!'
     }
 
-    private fun peek():Token {
-        return tokens[index]
-    }
+    private fun peek():Token = tokens[index]
 
     private fun pop():Token {
         index++
         return tokens[index - 1]
     }
 
-    private fun accept(data:String):Token? {
-        return if (peek().data == data) {
+    private fun accept(data:String):Token? = if (peek().data == data) {
             pop()
         } else {
             null
         }
-    }
 
     private fun takeUntil(data:String):String {
         var retval = ""
@@ -94,8 +90,7 @@ class Parser {
         return retval
     }
 
-    private fun parseNode():Node? {
-        return if (accept("#") != null) {
+    private fun parseNode():Node? = if (accept("#") != null) {
             parseHeader()
         } else if (accept("```") != null) {
             parseCodeBlock()
@@ -106,7 +101,6 @@ class Parser {
         } else {
             null
         }
-    }
 
     private fun parseHeader():Header {
         var size = 1
@@ -116,13 +110,9 @@ class Parser {
         return Header(size, parseFormattedText(listOf("\n")))
     }
 
-    private fun parseParagraph():Paragraph {
-        return Paragraph(parseFormattedText(listOf("\n")))
-    }
+    private fun parseParagraph():Paragraph = Paragraph(parseFormattedText(listOf("\n")))
 
-    private fun parseCodeBlock():CodeBlock {
-        return CodeBlock(takeUntil("```"))
-    }
+    private fun parseCodeBlock():CodeBlock = CodeBlock(takeUntil("```"))
 
     private fun parseImage():Image {
         expect("[")
@@ -174,9 +164,7 @@ class Parser {
         return Bold(children)
     }
 
-    private fun parseCode():Code {
-        return Code(takeUntil("`"))
-    }
+    private fun parseCode():Code = Code(takeUntil("`"))
 
     private fun parseLink():Link {
         val text = pop().data
