@@ -11,7 +11,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] C#                    
 - [x] Kotlin                
 - [x] C                     
-- [ ] PHP                   
+- [x] PHP                   
 - [ ] Swift                 
 - [ ] Zig                   
 - [ ] Julia                 
