@@ -10,7 +10,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] Java                  
 - [x] C#                    
 - [x] Kotlin                
-- [ ] C                     
+- [x] C                     
 - [ ] PHP              
 - [ ] Swift                 
 - [ ] Zig                   

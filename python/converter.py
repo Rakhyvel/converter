@@ -155,6 +155,12 @@ def expect(data):
         print(f'error: {top.line}:{top.col} expected `{data}` got `{top.data if top.data[0] in "_*`#[]()!" else "text"}`')
         sys.exit(1)
 
+def take_until(sentinel):
+    text = ''
+    while not accept(sentinel):
+        text += pop().data
+    return text
+
 def parse_document():
     while index < len(tokens) - 1:
         node = parse_node()
@@ -183,10 +189,7 @@ def parse_paragraph():
     return Paragraph(parse_formatted_text({'\n'}))
 
 def parse_code_block():
-    text = ''
-    while not accept('```'):
-        text += pop().data
-    return CodeBlock(text)
+    return Code(take_until('```'))
 
 def parse_image():
     expect('[')
@@ -225,10 +228,7 @@ def parse_bold(bounds):
     return Bold(children)
 
 def parse_code():
-    text = ''
-    while not accept('`'):
-        text += pop().data
-    return Code(text)
+    return Code(take_until('`'))
 
 def parse_link():
     text = pop().data

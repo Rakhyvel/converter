@@ -31,17 +31,15 @@ public:
                 tokens.push_back(new Token{data, line, oldCol});
                 oldCol = col + 1;
                 if (data.find("\n") != std::string::npos) {
-                    line += 1;
+                    line++;
                     col = 0;
                 }
                 data = "";
             }
             if (oldC != '#' || !isspace(c)) {
                 data.push_back(c);
-                oldC = c;
-            } else {
-                oldC = c;
             }
+            oldC = c;
             col += 1;
         }
         tokens.push_back(new Token{data, line, oldCol});
