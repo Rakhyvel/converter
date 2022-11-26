@@ -1,0 +1,1 @@
+58534 3940649674982390 1669409003464730200 8969ee9f781e29c0e4926b7f8e6d146c C:\zig-windows-x86_64-0.11.0-dev.251+7c527c6df\lib\libc\mingw\lib-common\ntdll.def.in
