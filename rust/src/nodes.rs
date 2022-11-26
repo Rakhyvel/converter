@@ -41,29 +41,19 @@ pub struct Link {
     pub url: String
 }
 
+fn get_child_html_vec(children:&Vec<Box<dyn Node>>)->Vec<String> {
+    children.iter().map(|child| child.get_string()).collect()
+}
+
 impl Node for Header {
     fn get_string(&self)->String {
-        let mut text = format!("<h{}>", self.size);
-        let mut i = 0;
-        for child in self.children.iter() {
-            if i == 0 {
-                text += &child.get_string().trim();
-            } else {
-                text += &child.get_string();
-            }
-            i += 1;
-        }
-        format!("{}</h{}>\n", text, self.size)
+        format!("<h{}>{}</h{}>\n", self.size, get_child_html_vec(&self.children).join(""), self.size)
     }
 }
 
 impl Node for Paragraph {
     fn get_string(&self)->String {
-        let mut text = String::from("<p>");
-        for child in self.children.iter() {
-            text += &child.get_string();
-        }
-        text + "</p>\n\n"
+        format!("<p>{}</p>\n\n", get_child_html_vec(&self.children).join(""))
     }
 }
 
@@ -87,21 +77,13 @@ impl Node for Text {
 
 impl Node for Italic {
     fn get_string(&self)->String {
-        let mut text = String::from("<em>");
-        for child in self.children.iter() {
-            text += &child.get_string();
-        }
-        text + "</em>"
+        format!("<em>{}</em>", get_child_html_vec(&self.children).join(""))
     }
 }
 
 impl Node for Bold {
     fn get_string(&self)->String {
-        let mut text = String::from("<strong>");
-        for child in self.children.iter() {
-            text += &child.get_string();
-        }
-        text + "</strong>"
+        format!("<strong>{}</strong>", get_child_html_vec(&self.children).join(""))
     }
 }
 

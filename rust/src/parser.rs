@@ -1,5 +1,3 @@
-use std::collections::HashSet;
-
 use crate::nodes::*;
 
 #[derive(Clone, Debug)]
@@ -25,7 +23,9 @@ pub fn create_parser(contents: String)->Parser {
     let mut old_c:char = contents.chars().next().unwrap();
     for c in contents.chars().skip(1) {
         if old_c == '\n' || old_c == '\r' || (is_special_char(old_c) != is_special_char(c)) || c == '#' || c == '[' || c == '(' || c == '!' || c == '\n' || c == '\r' {
-            parser.tokens.push(Token{data:data, line:line, col:old_col});
+            if !data.contains("\r") {
+                parser.tokens.push(Token{data:data, line:line, col:old_col});
+            }
             old_col = col + 1;
             if c == '\n' {
                 line += 1;
@@ -109,12 +109,12 @@ impl Parser {
         while self.accept(&String::from("#")).is_some() {
             size += 1;
         }
-        let bounds: HashSet<String> = vec![String::from("\n")].into_iter().collect();
+        let bounds = vec![String::from("\n")];
         Header{size:size, children:self.parse_formatted_text(&bounds)}
     }
 
     fn parse_paragraph(&mut self)->Paragraph {
-        let bounds: HashSet<String> = vec![String::from("\n")].into_iter().collect();
+        let bounds = vec![String::from("\n")];
         Paragraph{children:self.parse_formatted_text(&bounds)}
     }
 
@@ -136,7 +136,7 @@ impl Parser {
         Image{text, url}
     }
 
-    fn parse_formatted_text(&mut self, bounds:&HashSet<String>)->Vec<Box<dyn Node>> {
+    fn parse_formatted_text(&mut self, bounds:&Vec<String>)->Vec<Box<dyn Node>> {
         let mut retval: Vec<Box<dyn Node>> = Vec::new();
         while !bounds.contains(&self.peek().data) {
             if self.accept(&String::from("_")).is_some() || self.accept(&String::from("*")).is_some() {
@@ -154,10 +154,10 @@ impl Parser {
         retval
     }
 
-    fn parse_italic(&mut self, bounds:&HashSet<String>)->Italic {
+    fn parse_italic(&mut self, bounds:&Vec<String>)->Italic {
         let mut new_bounds = bounds.clone();
-        new_bounds.insert(String::from("*"));
-        new_bounds.insert(String::from("_"));
+        new_bounds.push(String::from("*"));
+        new_bounds.push(String::from("_"));
         let children = self.parse_formatted_text(&new_bounds);
         if self.accept(&String::from("*")).is_none() {
             self.expect(String::from("_"));
@@ -165,10 +165,10 @@ impl Parser {
         Italic{children}
     }
 
-    fn parse_bold(&mut self, bounds:&HashSet<String>)->Bold {
+    fn parse_bold(&mut self, bounds:&Vec<String>)->Bold {
         let mut new_bounds = bounds.clone();
-        new_bounds.insert(String::from("**"));
-        new_bounds.insert(String::from("__"));
+        new_bounds.push(String::from("**"));
+        new_bounds.push(String::from("__"));
         let children = self.parse_formatted_text(&new_bounds);
         if self.accept(&String::from("**")).is_none() {
             self.expect(String::from("__"));

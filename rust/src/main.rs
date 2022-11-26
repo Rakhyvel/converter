@@ -20,6 +20,7 @@
 //  - Iterable for loop
 //  - Warning if a local variable is never used, if a function is never called
 //  - Good string formatting
+//  - Functional programming patterns
 // Cons:
 //  - Cargo is a bit bulky and sensitive. Not suitable for prototyping
 //      (Just for this project the rust directory is 11 MEGABYTES. 20 times larger than others)
@@ -46,48 +47,29 @@ use std::env;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
+use std::result::Result;
+use std::error::Error;
 
-fn main() {
+fn main()->Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
         panic!("usage: cargo run <filename>");
     }
 
-    let filename = &args[1];
-
-    // Create a path to the desired file
-    let path = Path::new(filename);
-    let display = path.display();
-
-    // Open the path in read-only mode, returns `io::Result<File>`
-    let mut file = match File::open(&path) {
-        Err(why) => panic!("couldn't open {}: {}", display, why),
-        Ok(file) => file,
-    };
-
-    // Read the file contents into a string, returns `io::Result<usize>`
+    // Open input file, read contents
+    let mut file = File::open(&Path::new(&args[1]))?;
     let mut s = String::new();
-    match file.read_to_string(&mut s) {
-        Err(why) => panic!("couldn't read {}: {}", display, why),
-        Ok(_) => (),
-    }
+    file.read_to_string(&mut s)?;
 
+    // Create parser, parse document
     let mut _parser = parser::create_parser(s);
     let html = _parser.parse_document();
 
-    let path = Path::new("output.html");
-    let display = path.display();
-
-    // Open a file in write-only mode, returns `io::Result<File>`
-    let mut file = match File::create(&path) {
-        Err(why) => panic!("couldn't create {}: {}", display, why),
-        Ok(file) => file,
-    };
-
+    // Open output file, write output
+    let mut output_file = File::create(&Path::new("output.html"))?;
     for node in html.iter() {
-        match file.write_all(node.get_string().as_bytes()) {
-            Ok(_) => (),
-            Err(_) => panic!("Error writing to output file")
-        }
+        output_file.write_all(node.get_string().as_bytes())?
     }
+
+    Ok(())
 }
