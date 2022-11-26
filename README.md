@@ -12,9 +12,8 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] Kotlin                
 - [x] C                     
 - [x] PHP                   
-- [ ] Swift                 
-- [ ] Zig                   
-- [ ] Julia                 
+- [x] Zig                   
+- [x] Julia                 
 - [ ] Scala                 
 - [ ] Elixir                
 - [ ] Ruby                  
@@ -32,7 +31,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [ ] F#                    
 - [ ] Clojure               
 - [ ] Perl                  
-- [ ] Odin                  
+- [ ] *Odin                  
 - [ ] Astro
 - [ ] Crystal               
 - [ ] Tcl                   
