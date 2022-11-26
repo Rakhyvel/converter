@@ -60,57 +60,57 @@ pub const Node = union(NodeTag) {
         }
     }
 
-    pub fn getHTML(node:Node, w:std.fs.File.Writer) void {
+    pub fn getHTML(node:Node, w:std.fs.File.Writer) !void {
         switch (node) {
             NodeTag.header => {
-                w.print("<h{}>", .{node.header.size}) catch unreachable;
+                try w.print("<h{}>", .{node.header.size});
                 for (node.header.children.items) |child| {
-                    getHTML(child, w);
+                    try getHTML(child, w);
                 }
-                w.print("</h{}>\n", .{node.header.size}) catch unreachable;
+                try w.print("</h{}>\n", .{node.header.size});
             },
 
             NodeTag.paragraph => {
-                w.print("{s}", .{"<p>"}) catch unreachable;
+                try w.print("{s}", .{"<p>"});
                 for (node.paragraph.children.items) |child| {
-                    getHTML(child, w);
+                    try getHTML(child, w);
                 }
-                w.print("{s}", .{"</p>\n\n"}) catch unreachable;
+                try w.print("{s}", .{"</p>\n\n"});
             },
 
             NodeTag.codeblock => {
-                w.print("{s}", .{"<pre><code>"}) catch unreachable;
-                printCode(node.codeblock.text, w) catch unreachable;
-                w.print("{s}", .{"</code></pre>\n\n"}) catch unreachable;
+                try w.print("{s}", .{"<pre><code>"});
+                try printCode(node.codeblock.text, w);
+                try w.print("{s}", .{"</code></pre>\n\n"});
             },
 
-            NodeTag.image => w.print("<img src=\"{s}\" alt=\"{s}\" />\n\n", .{node.image.url, node.image.text}) catch unreachable,
+            NodeTag.image => try w.print("<img src=\"{s}\" alt=\"{s}\" />\n\n", .{node.image.url, node.image.text}),
 
-            NodeTag.text => w.print("{s}", .{node.text.text}) catch unreachable,
+            NodeTag.text => try w.print("{s}", .{node.text.text}),
 
             NodeTag.italic => {
-                w.print("{s}", .{"<em>"}) catch unreachable;
+                try w.print("{s}", .{"<em>"});
                 for (node.italic.children.items) |child| {
-                    getHTML(child, w);
+                    try getHTML(child, w);
                 }
-                w.print("{s}", .{"</em>"}) catch unreachable;
+                try w.print("{s}", .{"</em>"});
             },
 
             NodeTag.bold => {
-                w.print("{s}", .{"<strong>"}) catch unreachable;
+                try w.print("{s}", .{"<strong>"});
                 for (node.bold.children.items) |child| {
-                    getHTML(child, w);
+                    try getHTML(child, w);
                 }
-                w.print("{s}", .{"</strong>"}) catch unreachable;
+                try w.print("{s}", .{"</strong>"});
             },
 
             NodeTag.code => {
-                w.print("{s}", .{"<code>"}) catch unreachable;
-                printCode(node.code.text, w) catch unreachable;
-                w.print("{s}", .{"</code>"}) catch unreachable;
+                try w.print("{s}", .{"<code>"});
+                try printCode(node.code.text, w);
+                try w.print("{s}", .{"</code>"});
             },
 
-            NodeTag.link => w.print("<a href=\"{s}\">{s}</a>", .{node.link.url, node.link.text}) catch unreachable,
+            NodeTag.link => try w.print("<a href=\"{s}\">{s}</a>", .{node.link.url, node.link.text}),
         }
     }
 };

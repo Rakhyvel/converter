@@ -14,7 +14,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] PHP                   
 - [x] Zig                   
 - [x] Julia                 
-- [ ] Scala                 
+- [x] Scala                 
 - [ ] Elixir                
 - [ ] Ruby                  
 - [ ] Lua                   
