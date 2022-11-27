@@ -1,0 +1,81 @@
+std = import "<std>"
+
+Node = <
+    header: (size:Int, children:std.List(Node))
+
+    paragraph: (children:std.List(Node))
+
+    codeblock: (text:String)
+
+    image: (text:String, url:String)
+
+    text: (text:String)
+
+    italic: (children:std.List(Node))
+
+    bold: (children:std.List(Node))
+
+    code: (text:String)
+
+    link: (text:String, url:String)
+
+    let printCode:(text:String, out:std.sys.File)->!() = 
+        for c in text {
+            if c != '\r' {
+                try out.print("{c}", c)
+            }
+        }
+
+    let getHTML:(node:Node, out:std.fs.File)->!() = 
+        case node {
+            Node.header => {
+                try out.print("<h{}>", node.header.size);
+                for child in node.header.children.items {
+                    try getHTML(child, out);
+                }
+                try out.print("</h{}>\n", node.header.size);
+            }
+
+            Node.paragraph => {
+                try out.print("<p>")
+                for child in node.paragraph.children.items {
+                    try getHTML(child, out)
+                }
+                try out.print("</p>\n\n")
+            }
+
+            Node.codeblock => {
+                try out.print("pre><code>")
+                try printCode(node.codeblock.text, out)
+                try out.print("</code></pre>\n\n")
+            }
+
+            Node.image => try out.print("<img src=\"{s}\" alt=\"{s}\" />\n\n", (node.image.url, node.image.text))
+
+            Node.text => try out.print("{s}", node.text.text)
+
+            Node.italic => {
+                try out.print("<em>")
+                for child in node.italic.children.items {
+                    try getHTML(child, out);
+                }
+                try out.print("</em>")
+            }
+
+            Node.bold => {
+                try out.print("<strong>")
+                for child in node.bold.children.items {
+                    try getHTML(child, out);
+                }
+                try out.print("</strong>")
+            }
+
+            Node.code => {
+                try out.print("pre><code>")
+                try printCode(node.code.text, out)
+                try out.print("</code></pre>\n\n")
+            }
+
+            Node.link => try w.print("<a href=\"{s}\">{s}</a>", (node.link.url, node.link.text))
+        }
+>

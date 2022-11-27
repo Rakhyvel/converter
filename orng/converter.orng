@@ -1,0 +1,24 @@
+std = import "<std>"
+parser = import "parser.orng"
+nodes = import "nodes.orng"
+
+fn main(args:[]const String)->!() = {
+    if args.len != 1 {
+        std.debug.err "usage: converter.exe <markdown-filename>"
+    } else {
+        -- Open input file, read markdown
+        let file = sys.open args[0]
+        defer file.close()
+        let contents = file.read ()
+
+        -- Create parser, parse document
+        let document = (try parser.Parser.create(contents)).parseDocument ()
+
+        -- Open output file, write HTML
+        let outputFile = sys.open("output.html", "w")
+        defer outputFile.close()
+        for (node in document) {
+            try node.writeHTML out
+        }
+    }
+}

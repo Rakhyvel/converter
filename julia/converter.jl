@@ -15,25 +15,13 @@ struct Header <: Node
     children::Vector{Node}
 end
 
-function getHTML(header::Header)
-    text = "<h$(header.size)>"
-    for child in header.children
-        text *= getHTML(child)
-    end
-    text * "</h$(header.size)>\n"
-end
+getHTML(header::Header) = "<h$(header.size)>$(join(map(child->getHTML(child), header.children), ""))</h$(header.size)>\n"
 
 struct Paragraph <: Node
     children::Vector{Node}
 end
 
-function getHTML(paragraph::Paragraph)
-    text = "<p>"
-    for child in paragraph.children
-        text *= getHTML(child)
-    end
-    text * "</p>\n\n"
-end
+getHTML(paragraph::Paragraph) = "<p>$(join(map(child->getHTML(child), paragraph.children), ""))</p>\n\n"
 
 struct CodeBlock <: Node
     text::String
@@ -58,25 +46,13 @@ struct Italic <: Node
     children::Vector{Node}
 end
 
-function getHTML(italic::Italic)
-    text = "<em>"
-    for child in italic.children
-        text *= getHTML(child)
-    end
-    text * "</em>"
-end
+getHTML(italic::Italic) = "<em>$(join(map(child->getHTML(child), italic.children), ""))</em>"
 
 struct Bold <: Node
     children::Vector{Node}
 end
 
-function getHTML(bold::Bold)
-    text = "<strong>"
-    for child in bold.children
-        text *= getHTML(child)
-    end
-    text * "</strong>"
-end
+getHTML(bold::Bold) = "<strong>$(join(map(child->getHTML(child), bold.children), ""))</strong>"
 
 struct Code <: Node
     text::String
@@ -111,7 +87,7 @@ function createParser(contents::String)
     oldCol::Int = 1
     oldC::Char = data[1]
     for c::Char in SubString(contents, 2)
-        if oldC == '\n' || oldC == '\r' || (isSpecialChar(oldC) != isSpecialChar(c)) || c == '#' || c === '[' || c == '(' || c == '!' || c == '\n' || c == '\r'
+        if oldC == '\n' || oldC == '\r' || (isSpecialChar(oldC) != isSpecialChar(c)) || contains("#[(!\n\r", string(c))
             if !contains(data, "\r")
                 push!(parser.tokens, Token(data, line, oldCol))
             end
@@ -143,15 +119,14 @@ end
 
 peek(parser::Parser) = parser.tokens[parser.index]
 
-function accept(parser::Parser, data::String)
+accept(parser::Parser, data::String) =
     if peek(parser).data == data
         pop(parser)
     else
         nothing
     end
-end
 
-function expect(parser::Parser, data::String)
+expect(parser::Parser, data::String) =
     if accept(parser, data) === nothing
         top = peek(parser)
         if isSpecialChar(top.data[1])
@@ -161,28 +136,28 @@ function expect(parser::Parser, data::String)
         end
         exit(1)
     end
-end
 
-function takeUntil(parser::Parser, sentinel::String) 
-    retval = ""
-    while accept(parser, sentinel) === nothing
-        retval *= pop(parser).data
+
+takeUntil(parser::Parser, sentinel::String) = 
+    if accept(parser, sentinel) === nothing
+        pop(parser).data * takeUntil(parser, sentinel)
+    else
+        ""
     end
-    retval
-end
 
-function parseDocument(parser::Parser)
-    retval = []
-    while parser.index < length(parser.tokens) - 1
+parseDocument(parser::Parser) =
+    if parser.index < length(parser.tokens) - 1
         node = parseNode(parser)
-        if node !== nothing
-            push!(retval, node)
+        rest = parseDocument(parser)
+        if node !== nothing 
+            push!(rest, node)
         end
+        rest
+    else
+        []
     end
-    retval
-end
 
-function parseNode(parser::Parser)
+parseNode(parser::Parser) =
     if accept(parser, "#") !== nothing
         parseHeader(parser)
     elseif accept(parser, "```") !== nothing
@@ -194,7 +169,6 @@ function parseNode(parser::Parser)
     else
         nothing
     end
-end
 
 function parseHeader(parser::Parser)
     size = 1
@@ -272,17 +246,8 @@ if length(ARGS) != 1
 else
     # Open input file, read contents
     f = open(ARGS[1])
-    contents = read(f, String)
-    close(f)
-
-    # Create parser, parse document
-    parser = createParser(contents)
-    document = parseDocument(parser)
-
-    # Write out document to output file
     output = open("output.html", "w")
-    for node in document
-        write(output, getHTML(node))
-    end
+    write(output, "$(join(map(node->getHTML(node), reverse(parseDocument(createParser(read(f, String))))), ""))")
     close(output)
+    close(f)
 end
