@@ -22,8 +22,8 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] Julia                 
 - [x] Scala                 
 - [x] Elixir                
-- [x] Ruby                 
-- [ ] Blade                 
+- [x] Ruby                   
+- [x] Blade
 - [ ] *Pascal/Delphi         
 - [ ] Prolog                
 - [ ] *Nim                   

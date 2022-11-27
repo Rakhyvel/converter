@@ -1,17 +1,15 @@
 -- To run: ghc converter.hs && converter.exe ../input.md
 -- Pros:
+--      - Lazy evaluation is powerful
 -- Cons:
 --      - Bad not-equals syntax
 --      - Function parameter names and types are not coupled
 --      - No default parameters
 --      - Record fields are functions that are global namespaced (WTF!)
 --      - No way really to name the fields in an enum
+--      - It's all well and concicse but its very difficult to work in I think. Syntax is weird
 
-data Token = Token {
-    tokenData::String,
-    line::Int,
-    col::Int
-} deriving Show
+data Token = Token {tokenData::String, line::Int, col::Int}
 
 data Node =
       Header Int [Node]
@@ -23,7 +21,6 @@ data Node =
     | Bold [Node]
     | Code String
     | Link String String
-    deriving Show
 
 getHTMLMap = concatMap getHTML
 getHTML (Header size children) =
