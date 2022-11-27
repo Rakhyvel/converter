@@ -314,7 +314,6 @@ class Parser
     end
 end
 
-# Open input file, read contents
 if ARGV.length != 1 
     puts "usage: ruby converter.rb <markdown-filename>"
 else
@@ -324,7 +323,3 @@ else
         end
     end
 end
-
-# Create parser, parse document
-
-# Open output file, write ouput

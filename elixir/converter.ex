@@ -41,7 +41,8 @@ defmodule Converter do
     contents = File.read!(filename)
 
     # Create parser, parse documents
-    IO.binwrite(File.open!("output.html", [:write]), String.graphemes(String.slice(contents, 1, String.length contents))
+    IO.binwrite(File.open!("output.html", [:write]),
+    String.graphemes(String.slice(contents, 1, String.length contents))
       |>tokenize(String.first(contents), 1, 1, 1)
       |>parse_document([])
       |>get_HTML_list(""))

@@ -1,54 +1,59 @@
 # Goal
 The goal of this project is to explore and compare/constrast general purpose languages. The same Markdown to HTML converter is implemented in each language. Each language has a comment with the command to run the program, as well as my opinions about the language as I was implementing the converter.
 
+# Ground rules
+- Only declare types when necessary
+- Write idomatic code for the language
+- Only use the standard library that comes with the language
+    - (exception: can use libc for assembly)
+
 # Language TODO list
 - [x] Python                
 - [x] JavaScript            
-- [x] Go                    
-- [x] C++                   
-- [x] Rust                  
+- [x] *Go                    
+- [x] *C++                   
+- [x] *Rust                  
 - [x] Java                  
 - [x] C#                    
 - [x] Kotlin                
 - [x] C                     
 - [x] PHP                   
-- [x] Zig                   
+- [x] *Zig                   
 - [x] Julia                 
 - [x] Scala                 
 - [x] Elixir                
-- [x] Ruby                  
-- [ ] Lua                   
+- [x] Ruby                 
 - [ ] Blade                 
-- [ ] Pascal/Delphi         
+- [ ] *Pascal/Delphi         
 - [ ] Prolog                
-- [ ] Nim                   
+- [ ] *Nim                   
 - [ ] Groovy                
 - [ ] Visual Basic .NET     
-- [ ] OCaml                 
-- [ ] Haskell               
-- [ ] Fortran               
-- [ ] Assembly
-- [ ] F#                    
+- [ ] *OCaml                 
+- [x] *Haskell               
+- [ ] *Fortran               
+- [ ] *Assembly
+- [ ] *F#                    
 - [ ] Clojure               
 - [ ] Perl                  
-- [ ] Odin                  
-- [ ] Astro
+- [ ] *Odin                  
+- [ ] *Astro
 - [ ] Crystal               
 - [ ] Tcl                   
 - [ ] Smalltalk             
 - [ ] Common Lisp           
 - [ ] Objective-C           
 - [ ] Mathematica           
-- [ ] Ada                   
+- [ ] *Ada                   
 - [ ] Haxe                  
 - [ ] Racket                
 - [ ] Erlang                
-- [ ] SML               
-- [ ] D                     
+- [ ] *SML               
+- [ ] *D                     
 - [ ] Scheme          
 - [ ] Forth
-- [ ] Mercury
-- [ ] Eiffel
+- [ ] *Mercury
+- [ ] *Eiffel
 - [ ] REXX
 - [ ] Rebol
 - [ ] Dylan
