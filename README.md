@@ -16,7 +16,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] Julia                 
 - [x] Scala                 
 - [x] Elixir                
-- [ ] Ruby                  
+- [x] Ruby                  
 - [ ] Lua                   
 - [ ] Blade                 
 - [ ] Pascal/Delphi         
@@ -31,7 +31,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [ ] F#                    
 - [ ] Clojure               
 - [ ] Perl                  
-- [ ] *Odin                  
+- [ ] Odin                  
 - [ ] Astro
 - [ ] Crystal               
 - [ ] Tcl                   
