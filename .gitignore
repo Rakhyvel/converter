@@ -1,0 +1,6 @@
+*.hi
+.o
+.exe
+.out
+zig-cache/
+zig-out/
