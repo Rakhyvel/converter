@@ -4,4 +4,4 @@
 .out
 zig-cache/
 zig-out/
-target/
+rust/target/
