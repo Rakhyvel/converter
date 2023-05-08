@@ -7,3 +7,4 @@ zig-out/*
 rust/target/*
 scala/out/*
 scala/.idea/*
+*.class
