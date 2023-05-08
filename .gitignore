@@ -1,7 +1,7 @@
 *.hi
-.o
-.exe
-.out
+*.o
+*.exe
+*.out
 zig-cache/*
 zig-out/*
 rust/target/*
