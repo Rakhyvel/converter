@@ -2,8 +2,8 @@
 .o
 .exe
 .out
-zig-cache/
-zig-out/
-rust/target/
-scala/out/
-scala/.idea
+zig-cache/*
+zig-out/*
+rust/target/*
+scala/out/*
+scala/.idea/*
