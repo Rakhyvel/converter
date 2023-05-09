@@ -2,7 +2,7 @@
 # Pros:
 #   - Pretty terse and simple
 #   - Strings are fairly easy
-#   - I like the UFCS style of OOP, it's honestly not too bad!
+#   - I like the UFCS style of OOP, its honestly not too bad!
 #   - Immutability
 #   - Function body is result
 #   - Generics work fairly well
@@ -11,7 +11,7 @@
 # Cons:
 #   - Weird data model, with sequences and stuff, but no access to lower level stuff
 #   - Have to define procs in order. Maybe just a lang-server thing?
-#   - Identifiers are just undefined if they're not defined. I'd rather have an error, when is that behavior ever desired?
+#   - Identifiers are just undefined if theyre not defined. Id rather have an error, when is that behavior ever desired?
 #   - Overloading causes strange error messages, like in C++
 #   - Have to import options, instead of them just being there
 import os

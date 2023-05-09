@@ -1,24 +1,236 @@
-std = import "<std>"
-parser = import "parser.orng"
-nodes = import "nodes.orng"
+const std = import("std")
 
-fn main(args:[]const String)->!() = {
-    if args.len != 1 {
+const Node
+    = header: (size: Int, children: std.ArrayList(&Node))
+    | paragraph: (children: std.ArrayList(&Node))
+    | codeblock: (text:String)
+    | image: (text:String, url:String)
+    | text: (text:String)
+    | italic: (children:std.List(Node))
+    | bold: (children:std.List(Node))
+    | code: (text:String)
+    | link: (text:String, url:String)
+
+fn printCode: (text:String, out:std.sys.File)->!() = 
+    for c in text
+        if c != '\r'
+            try out.print("{c}", c)
+
+fn getHTML: (node:Node, out:std.fs.File)->!() = 
+    match node
+        .header(size, children) =>
+            try out.print("<h{}>", size)
+            for child in children.items
+                try getHTML(child, out)
+            try out.print("</h{}>\n", size)
+
+        .paragraph(children) =>
+            try out.print("<p>")
+            for child in children.items
+                try getHTML(child, out)
+            try out.print("</p>\n\n")
+
+        .codeblock(text) => {
+            try out.print("<pre><code>")
+            try printCode(text, out)
+            try out.print("</code></pre>\n\n")
+        }
+
+        .image(text, url) => try out.print("<img src=\"{s}\" alt=\"{s}\" />\n\n", (url, text))
+
+        .text(text) => try out.print("{s}", text)
+
+        .italic(children) =>
+            try out.print("<em>")
+            for child in children.items
+                try getHTML(child, out)
+            try out.print("</em>")
+
+        .bold(children) =>
+            try out.print("<strong>")
+            for child in children.items
+                try getHTML(child, out)
+            try out.print("</strong>")
+
+        .code(text) =>
+            try out.print("pre><code>")
+            try printCode(text, out)
+            try out.print("</code></pre>\n\n")
+
+        .link(text, url) => try out.print("<a href=\"{s}\">{s}</a>", (url, text))
+
+const Token = (data:String, line:Int, col:Int)
+
+const Parser = (index:Int, tokens: std.ArrayList(Token))
+
+fn createParser: (contents:String, allocator: std.mem.Allocator)->&Parser =
+    let retval = allocator.new(Parser, (0, std.ArrayList(Token).create()))
+    let data = contents[..1]
+    let line = 1
+    let col = 1
+    let oldCol = 1
+    let oldC = contents[0]
+    while let i = 1; i < contents.len; i += 1
+        let c = contents[i]
+        if oldC == '\n' || oldC == '\r' or (isSpecialChar(oldC) != isSpecialChar c) || c == '#' || c == '[' || c == '(' || c == '!' || c == '\n' || c == '\r' {
+            if !data.contains '\r'
+                retval.tokens.>append (data, line, oldCol)
+            oldCol = col + 1
+            if c == '\n'
+                line += 1
+                col = 0
+            data.ptr += data.len
+            while oldC == '#' && data[0] < 32
+                i += 1
+                data.ptr += 1
+            data.len = 0
+        data.len += 1
+        col += 1
+        oldC = c
+    retval.tokens.>append(data, line, col)
+    retval.tokens.>append("\n", line, col)
+    retval
+
+fn pop: (self: &Parser)->Token =
+    self.>index += 1
+    self.>tokens.items[self.>index - 1]
+
+fn peek: (self: &Parser)->Token = self.>tokens.items[self.>index]
+
+fn accept: (self: &Parser, data:String)->?Token =
+    if self.>peek().data == data
+        self.>pop()
+
+fn expect: (self: &Parser, data:String)->() =
+    match self.>accept(data)
+    | null =>
+        let top = self.>peek()
+        if isSpecialChar(top.data[0])
+            std.log.err("error: {}:{} expected `{s}`, got `{s}`.", .{top.line, top.col, data, top.data})
+        else
+            std.log.err("error: {}:{} expected `{s}`, got text.", .{top.line, top.col, data})
+        std.sys.exit(1)
+    | _ => ()
+
+fn takeUntil: (self: &Parser, sentinel:String)->String =
+    let data = self.>peek().data
+    let lastPtr = data.ptr
+    while self.>accept(sentinel) == null
+        lastPtr = self.>pop().data.ptr
+    lastPtr = self.>tokens.items[self.>index - 1].data.ptr
+    data.len = lastPtr - data.ptr
+    data
+
+fn parseDocument: (self: &Parser, allocator: std.mem.Allocator)->!std.ArrayList(Node) =
+    let retval = std.ArrayList(Node).create(allocator)
+    while self.>index < self.>tokens.items.len - 1
+        match self.>parseNode(allocator)
+        | null => ()
+        | some node => try retval.>append(node)
+    retval
+
+fn parseNode: (self: &Parser)->!?Node =
+    cond
+    | self.>accept("#") != null => try self.>parseHeader()
+    | self.>accept("```") != null => try self.>parseCodeBlock()
+    | self.>accept("!") != null => try self.>parseImage()
+    | self.>accept("\n") == null => try self.>parseParagraph()
+    | else => null
+
+fn parseHeader: (self: &Parser)->!Node =
+    let size = 1
+    while let size = 1; self.>accept("#") != null; size += 1 {}
+    let bounds = std.List(String).create()
+    bounds.>append("\n")
+    .header(size, self.>parseFormattedText(bounds))
+
+fn parseParagraph: (self: &Parser)->!Node =
+    let bounds = std.List(String).create()
+    bounds.>append("\n")
+    .paragraph(self.>parseFormattedText(bounds))
+
+fn parseCodeBlock: (self: &Parser)->Node = (.codeblock=(self.>takeUntil("```")))
+
+fn parseImage: (self: &Parser)->Node =
+    self.>expect("[")
+    let text = self.>pop().data
+    self.>expect("]")
+    self.>expect("(")
+    let url = self.>pop().data
+    self.>expect(")")
+    .image(text, url)
+
+fn parseItalic: (self: &Parser, bounds: std.ArrayList(String))->Node =
+    let newBounds = std.List(String).init()
+    for (bound in bounds.items) {
+        newBounds.>append(bound)
+    }
+    newBounds.>append("*")
+    newBounds.>append("_")
+    let children = self.>parseFormattedText(allocator, newBounds)
+    match self.>accept("*")
+    | null => self.>expect("_")
+    | _    => ()
+    .italic(children)
+
+fn parseBold: (self: &Parser, bounds: std.ArrayList(String))->Node = 
+    let newBounds = std.List(String).init()
+    for (bound in bounds.items)
+        newBounds.>append(bound)
+    newBounds.>append("**")
+    newBounds.>append("__")
+    let children = self.>parseFormattedText(allocator, newBounds)
+    match self.>accept("**")
+    | null => self.>expect("__")
+    | _    => ()
+    .bold(children)
+
+fn parseCode: (self: &Parser)->Node = .code(self.>takeUntil("`"))
+
+fn parseLink: (self: &Parser)->Node =
+    let text = self.>pop().data
+    self.>expect("]")
+    self.>expect("(")
+    let url = self.>pop().data
+    self.>expect(")")
+    .link(text, url)
+
+fn parseFormattedText:(self: &Parser, bounds: std.ArrayList([]String))->std.ArrayList(Node) =
+    let retval = std.ArrayList(Node).init()
+    while not bounds.contains(self.>peek().data)
+        cond
+        | self.>accept("_") != null or self.>accept("*") != null   => retval.>append(self.>parseItalic(allocator, bounds))
+        | self.>accept("__") != null or self.>accept("**") != null => retval.>append(self.>parseBold(allocator, bounds))
+        | self.>accept("`") != null                                => retval.>append(self.>parseCode())
+        | self.>accept("[") != null                                 => retval.>append(self.>parseLink())
+        | else                                                     => retval.>append(.text(self.>pop().data))
+    retval
+
+fn isSpecialChar:(c:Char)->Bool 
+    =  c == '_' 
+    or c == '*' 
+    or c == '`' 
+    or c == '#' 
+    or c == '[' 
+    or c == ']' 
+    or c == '(' 
+    or c == ')' 
+    or c == '!'
+
+fn main: (args: []const String)->!() =
+    if args.len != 1
         std.debug.err "usage: converter.exe <markdown-filename>"
-    } else {
-        -- Open input file, read markdown
+    else 
+        // Open input file, read markdown
         let file = sys.open args[0]
         defer file.close()
         let contents = file.read ()
 
-        -- Create parser, parse document
-        let document = (try parser.Parser.create(contents)).parseDocument ()
+        // Create parser, parse document
+        let document = createParser(contents).>parseDocument()
 
-        -- Open output file, write HTML
+        // Open output file, write HTML
         let outputFile = sys.open("output.html", "w")
         defer outputFile.close()
-        for (node in document) {
+        for node in document
             try node.writeHTML out
-        }
-    }
-}

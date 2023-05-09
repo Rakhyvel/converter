@@ -9,7 +9,7 @@ Cons:
   - Really poor divergence
   - No generic print function
   - `else-if`
-  - Can't just print shit
+  - Cant just print shit
   - Poor standard library support
   - Non-mutally recursive functions (fairly lame!)
 *)

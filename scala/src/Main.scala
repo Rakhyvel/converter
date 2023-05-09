@@ -7,7 +7,7 @@ import java.io.PrintWriter
 //  - Immutability
 //  - Functional programming constructs
 //  - Optional semicolons
-//  - Last expression evaluated in block is block's value
+//  - Last expression evaluated in block is blocks value
 //  - Warnings about unnecessary parens
 //  - Cool string interpolation
 //  - Fairly strong let/use type inference
