@@ -26,7 +26,7 @@ The goal of this project is to explore and compare/constrast general purpose lan
 - [x] Blade
 - [ ] *Pascal/Delphi         
 - [ ] Prolog                
-- [ ] *Nim                   
+- [x] *Nim                   
 - [ ] Groovy                
 - [ ] Visual Basic .NET     
 - [ ] *OCaml                 
