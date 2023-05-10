@@ -55,6 +55,7 @@ int main(int argc, char** argv)
         }
         fclose(input);
 
+        // Create parser, parse documents
         Parser_Init(contents);
         List* document = Parser_ParseDocument();
 

@@ -12,3 +12,4 @@ scala/.idea/*
 nim/converter
 *.cmi
 *.cmo
+pascal/converter
