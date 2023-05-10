@@ -10,3 +10,5 @@ scala/.idea/*
 *.class
 */bin/*
 nim/converter
+*.cmi
+*.cmo
